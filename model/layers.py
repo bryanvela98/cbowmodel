@@ -13,9 +13,9 @@ class Linear:
         # We first initialize weights using Xavier/Glorot initialization. This is a fancier than a completely random initialization. To do so, we first calculate the bound for the random values and then generate random values uniformly from this range.
         bound = np.sqrt(6.0 / (in_features + out_features))
         # TODO: Generate a random matrix of weights with shape (in_features, out_features). Hint: Check np.random.uniform method.
-        weights = ...
+        weights = np.random.uniform(-bound, bound, (in_features, out_features))
         # TODO: Create a Parameter object to store the weights
-        self.weights = ...
+        self.weights = Parameter(weights)
         # Cache input for backward pass
         self.input_cache = None
     
@@ -30,10 +30,10 @@ class Linear:
         """
         # Cache input for backward pass. We will need this to compute gradients.
         #TODO: This variable should be assigned the input `x`.
-        self.input_cache = ...
+        self.input_cache = x
         #TODO: Return the linear transformation
-        return ...
-    
+        return self.input_cache @ self.weights.data
+
     def backward(self, grad_output: np.ndarray) -> np.ndarray:
         """Backward pass of linear layer.
         
@@ -48,11 +48,11 @@ class Linear:
         # Accumulate gradient for weights: dL/dW
         # Hint: To calculate the transpose of a numpy array `arr`, use `arr.T`
         # TODO: Compute the gradient of loss with respect to weights
-        self.weights.grad += ...
+        self.weights.grad += self.input_cache.T @ grad_output
         
         # TODO: Compute gradient with respect to input: dL/dX
-        grad_input = ...
-        
+        grad_input = grad_output @ self.weights.data.T
+
         return grad_input
     
     def __call__(self, x: np.ndarray) -> np.ndarray:
@@ -77,7 +77,7 @@ class Embedding:
         self.embedding_dim = embedding_dim
 
         # TODO: Initialize embeddings as a Parameter object
-        self.embeddings = ...
+        self.embeddings = Parameter(np.random.randn(vocab_size, embedding_dim) * 0.01) # small random values work better for init
 
     def __call__(self, indices: np.ndarray) -> np.ndarray:
         """
@@ -104,7 +104,7 @@ class Embedding:
         self.indices = indices  # Save indices for backpropagation
 
         #TODO: Return the embeddings corresponding to the input indices
-        output = ... 
+        output = self.embeddings.data[indices]  # gather embeddings using indices
         return output
 
     def backward(self, grad_output: np.ndarray) -> None:
@@ -121,7 +121,7 @@ class Embedding:
             self.embeddings.grad = np.zeros_like(self.embeddings.data)
 
         # TODO: Accumulate gradients for the embeddings corresponding to the input indices.
-        ...
+        np.add.at(self.embeddings.grad, self.indices, grad_output)
 
     def get_embeddings(self) -> np.ndarray:
         """

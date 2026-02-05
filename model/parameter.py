@@ -7,9 +7,9 @@ class Parameter:
         Args:
             data (np.ndarray): Initial parameter values
         """
-        self.data = ...
-        self.grad = ...
-    
+        self.data = data
+        self.grad = np.zeros_like(data)
+
     def zero_grad(self):
         """Reset gradients to zero."""
         self.grad = np.zeros_like(self.data)

@@ -23,7 +23,7 @@ class SGD:
             if param.grad is not None:
                 #TODO: Update the parameter using gradient descent
                 #Hint: Remember where the gradients and the parameters are stored.
-                ...
+                param.data -= self.learning_rate * param.grad
 
     def zero_grad(self) -> None:
         """

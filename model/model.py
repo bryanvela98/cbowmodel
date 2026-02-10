@@ -19,10 +19,10 @@ class CBOWModel:
         self.context_size = context_size
 
         #TODO: Initialize layers with correct dimensions whenever applicable
-        self.embedding_layer = ...
-        self.linear_layer = ...
-        self.softmax_layer = ...
-        self.loss_fn = ...
+        self.embedding_layer = Embedding(vocab_size, embedding_dim)
+        self.linear_layer = Linear(2 * context_size * embedding_dim, vocab_size)
+        self.softmax_layer = SoftmaxLayer()
+        self.loss_fn = NegativeLogLikelihoodLoss()
 
     def __call__(self, context_indices: np.ndarray) -> np.ndarray:
         """

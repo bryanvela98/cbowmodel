@@ -51,18 +51,18 @@ class CBOWModel:
                        (shape: (batch_size, vocab_size)).
         """
         #TODO: Lookup embeddings for context words from the embedding layer.
-        embeddings = ...  # Shape: (batch_size, 2 * context_size, embedding_dim)
+        embeddings = self.embedding_layer(context_indices)  # Shape: (batch_size, 2 * context_size, embedding_dim)
 
         #TODO: Concatenate embeddings for context words. You need to go from shape (batch_size, 2 * context_size, embedding_dim)
         # to shape (batch_size, 2 * context_size * embedding_dim).
         batch_size = embeddings.shape[0]
-        embeddings_reshaped = ...
+        embeddings_reshaped = embeddings.reshape(batch_size, -1)  # -1 auto-calculates the size
 
         #TODO: Feed the `embeddings_reshaped` through the linear layer.
-        logits = ...  # Shape: (batch_size, vocab_size)
+        logits = self.linear_layer(embeddings_reshaped)  # Shape: (batch_size, vocab_size)
 
         #TODO: Convert logits to probabilities using the softmax layer.
-        probs = ... # Shape: (batch_size, vocab_size)
+        probs = self.softmax_layer(logits) # Shape: (batch_size, vocab_size)
         return probs
 
     def backward(self, grad_output: np.ndarray) -> None:

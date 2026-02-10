@@ -75,10 +75,10 @@ class CBOWModel:
         """
         #TODO: Backpropagate through softmax layer using the backward() method.
         #Hint: You need to take as input the gradient of the loss with respect to the output probabilities.
-        grad_logits = ...  # Shape: (batch_size, vocab_size)
+        grad_logits = self.softmax_layer.backward(grad_output)  # Shape: (batch_size, vocab_size)
 
         #TODO: Backpropagate through the linear layer using the backward() method.
-        grad_embeddings_reshaped = ...  # Shape: (batch_size, 2 * context_size * embedding_dim)
+        grad_embeddings_reshaped = self.linear_layer.backward(grad_logits)  # Shape: (batch_size, 2 * context_size * embedding_dim)
 
         # Reshape gradients to match the original embedding shape:
         # Go from (batch_size, 2 * context_size * embedding_dim) to (batch_size, 2 * context_size, embedding_dim)

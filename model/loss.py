@@ -18,15 +18,15 @@ class NegativeLogLikelihoodLoss:
             float: The computed loss.
         """
         #TODO: Get the batch size
-        batch_size = ...
+        batch_size = probs.shape[0]
 
         #TODO: Get the predicted probabilities for the target indices.
         #Hint: Check np.arange() and numpy fancy indexing.
-        probs_target = probs[..., ...]
+        probs_target = probs[np.arange(batch_size), targets]
 
         #TODO: Compute the negative log likelihood loss and do not forget to divide by the batch size.
         #Hint: np.sum() and np.log() might be hepful. You will use the variable probs_target.
-        loss = ...
+        loss = -np.sum(np.log(probs_target)) / batch_size
 
         # Save values for backpropagation
         self.cache = (probs, targets)

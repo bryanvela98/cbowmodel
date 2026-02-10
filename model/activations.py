@@ -17,8 +17,8 @@ class SoftmaxLayer:
         """
         #TODO: Subtract max value to avoid overflow.
         #Hint: Use np.max with axis=1 and keepdims=True.
-        x_exp = ... # This is the numerator
-        probs = x_exp / ... # This is the denominator. Remember to sum over the correct axis.
+        x_exp = np.exp(x - np.max(x, axis=1, keepdims=True))  # This is the numerator, added overflow prevention in both scenario
+        probs = x_exp / np.sum(x_exp, axis=1, keepdims=True)  # This is the denominator. Remember to sum over the correct axis.
 
         self.cache = probs  # Save probabilities for backpropagation
         return probs

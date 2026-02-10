@@ -102,10 +102,10 @@ class CBOWModel:
             float: The computed loss.
         """
         #TODO: Call the class's forward method with the context indices to get the predicted probabilities.
-        probs = ...
+        probs = self.forward(context_indices)  # Shape: (batch_size, vocab_size)
 
         #TODO: Compute loss by calling the loss function forward method.
-        loss = ...
+        loss = self.loss_fn(probs, target_indices)
         return loss
 
     def backward_loss(self) -> None:
